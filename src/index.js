@@ -2,19 +2,40 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./styles.css";
+<div id="root" />;
 
-function App() {
-  return (
-    <div>
-      <div className="App">
-        <h1>Random Number Feed</h1>
-      </div>
+class App extends React.Component {
+  state = { randNums: 0 };
+  componentDidMount() {
+    this.interval = setInterval(
+      () =>
+        this.setState({
+          randNums: this.genRandNum()
+        }),
+      3000
+    );
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+  genRandNum = () => {
+    var min = 1;
+    var max = 100;
+    var rand = min + Math.random() * (max - min);
+    return rand;
+  };
+  render() {
+    return (
       <div>
-        <h2>RandomNumber</h2>
+        <div className="App">
+          <h1>Random Number Feed</h1>
+        </div>
+        <div className="App">
+          <h2>{this.state.randNums}</h2>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+ReactDOM.render(<App />, document.getElementById("root"));
